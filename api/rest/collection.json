@@ -1,1 +1,915 @@
-{}
+{
+	"info": {
+		"_postman_id": "1077d938-92f8-4bf3-b2d2-d9a66d625a58",
+		"name": "GoAccess",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Access",
+			"item": [
+				{
+					"name": "roles",
+					"item": [
+						{
+							"name": "Add Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Accounting Manager\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access/roles",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Role",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Inventory manager\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access/roles/r1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"roles",
+										"r1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete role",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/roles/r3",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"roles",
+										"r3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List roles",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/roles",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List roles by user",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/roles/user/:userId",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"roles",
+										"user",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "modules",
+					"item": [
+						{
+							"name": "Get available modules",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/modules",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"modules"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get modules by role",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/modules/:role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"modules",
+										":role"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign modules",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"modules\": [\n        \"vehicles\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access/modules/:role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"modules",
+										":role"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unassign modules",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/modules/:role/:modules",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"modules",
+										":role",
+										":modules"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										},
+										{
+											"key": "modules",
+											"value": "vehicles,bank"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get submodules by role",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/submodules/:role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"submodules",
+										":role"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign submodules",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"submodules\": [\n        \"reception\",\n        \"work-category\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access/submodules/:role/modules/:module",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"submodules",
+										":role",
+										"modules",
+										":module"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										},
+										{
+											"key": "module",
+											"value": "vehicles"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unassign submodules",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/submodules/:role/modules/:module/:submodules",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"submodules",
+										":role",
+										"modules",
+										":module",
+										":submodules"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										},
+										{
+											"key": "module",
+											"value": "vehicles"
+										},
+										{
+											"key": "submodules",
+											"value": "reception,work-category"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get sections by role",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/sections/:role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"sections",
+										":role"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign sections",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sections\": [\n        \"finder\",\n        \"add\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access/sections/:role/modules/:modules/submodules/:submodule",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"sections",
+										":role",
+										"modules",
+										":modules",
+										"submodules",
+										":submodule"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										},
+										{
+											"key": "modules",
+											"value": "vehicles"
+										},
+										{
+											"key": "submodule",
+											"value": "reception"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unassign sections",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/sections/:role/modules/:modules/submodules/:submodule/:sections",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"sections",
+										":role",
+										"modules",
+										":modules",
+										"submodules",
+										":submodule",
+										":sections"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										},
+										{
+											"key": "modules",
+											"value": "vehicles"
+										},
+										{
+											"key": "submodule",
+											"value": "reception"
+										},
+										{
+											"key": "sections",
+											"value": "add, finder"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "actions",
+					"item": [
+						{
+							"name": "List users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/users",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List users by role",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/users/role/:role_id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										"role",
+										":role_id"
+									],
+									"variable": [
+										{
+											"key": "role_id",
+											"value": "r1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Access list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/users/:user_id/access",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										":user_id",
+										"access"
+									],
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Action list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/users/:user_id/modules/:module/actions",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										":user_id",
+										"modules",
+										":module",
+										"actions"
+									],
+									"variable": [
+										{
+											"key": "user_id",
+											"value": "1"
+										},
+										{
+											"key": "module",
+											"value": "vehicles"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign actions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"actions\": [\n        \"delete:brand:[]:update\",\n        \"delete:brand:[]:remove\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth/actions/:role/modules/:module/submodules/:submodule",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"actions",
+										":role",
+										"modules",
+										":module",
+										"submodules",
+										":submodule"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r2"
+										},
+										{
+											"key": "module",
+											"value": "vehicles"
+										},
+										{
+											"key": "submodule",
+											"value": "reception"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unassign actions",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/actions/:role/modules/:module/submodules/:submodule/:actions",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"actions",
+										":role",
+										"modules",
+										":module",
+										"submodules",
+										":submodule",
+										":actions"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										},
+										{
+											"key": "module",
+											"value": "vehicles"
+										},
+										{
+											"key": "submodule",
+											"value": "reception"
+										},
+										{
+											"key": "actions",
+											"value": "delete:brand:[]:add"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign role to users",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/users/:userId/role/:roleId",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										":userId",
+										"role",
+										":roleId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "3"
+										},
+										{
+											"key": "roleId",
+											"value": "r3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Unassign role from users",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/auth/users/:userId/role/:roleId",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										":userId",
+										"role",
+										":roleId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "3"
+										},
+										{
+											"key": "roleId",
+											"value": "r3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "init",
+					"item": [
+						{
+							"name": "Force reset DB",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"actions\": [\n        \"delete:brand:[]:update\",\n        \"delete:brand:[]:remove\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth/actions/:role/modules/:module/submodules/:submodule",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"actions",
+										":role",
+										"modules",
+										":module",
+										"submodules",
+										":submodule"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r2"
+										},
+										{
+											"key": "module",
+											"value": "vehicles"
+										},
+										{
+											"key": "submodule",
+											"value": "reception"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
