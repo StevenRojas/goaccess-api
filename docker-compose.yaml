@@ -11,7 +11,7 @@ services:
     volumes:
       - ./data:/data
     networks:
-      - go-network
+      - goaccess-api-network
 
   redis-commander:
     container_name: redis-commander
@@ -23,21 +23,20 @@ services:
     ports:
       - "8081:8081"
     networks:
-      - go-network
+      - goaccess-api-network
 
-  goaccess:
+  goaccess-api:
     build: .
-    container_name: goaccess
+    container_name: goaccess-api
     restart: always
-    build: .
     env_file:
       - .env
     ports:
       - "8077:8077"
     networks:
-      - go-network
+      - goaccess-api-network
     depends_on:
       - redisdb
 
 networks:
-  go-network:
+  goaccess-api-network:

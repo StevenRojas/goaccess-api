@@ -1,11 +1,8 @@
 package transport
 
-import (
-	"fmt"
-)
-
 const accessPrefix = "/api/access"
 const authorizationPrefix = "/api/auth"
+const initializationPrefix = "/api/init"
 
 var userPaths = map[string]string{
 	"registerUser":   "/users",                           // gRPC
@@ -52,6 +49,10 @@ var authorizationPaths = map[string]string{
 	"getActionList": "/users/{user_id}/modules/{module}/actions", //GET
 }
 
+var initializationPaths = map[string]string{
+	"initDB": "/reset-db", //POST
+}
+
 func getAccessPath(path string) string {
 	if p, ok := accessPaths[path]; ok {
 		return accessPrefix + p
@@ -61,8 +62,14 @@ func getAccessPath(path string) string {
 
 func getActionsPath(path string) string {
 	if p, ok := authorizationPaths[path]; ok {
-		fmt.Println(authorizationPrefix + p)
 		return authorizationPrefix + p
+	}
+	panic("Undefined path")
+}
+
+func getInitPath(path string) string {
+	if p, ok := initializationPaths[path]; ok {
+		return initializationPrefix + p
 	}
 	panic("Undefined path")
 }

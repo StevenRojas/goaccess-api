@@ -244,5 +244,37 @@ func MakeHTTPHandlerForActions(r *mux.Router, svc service.AuthorizationService, 
 		codec.JSONEncoder(logger),
 		options...,
 	))
+}
 
+func MakeHTTPHandlerForInit(r *mux.Router, svc service.InitializationService, config conf.SecurityConfig, logger conf.LoggerWrapper) {
+	// create endpoints
+	e := endpoints.MakeInitEndpoints(
+		svc,
+		[]endpoint.Middleware{
+			middlewares.JWTCheck(logger),
+		},
+	)
+	// Apply CORS policy middleware
+	r.Use(middlewares.CORSPolicies(corsMethods))
+	r.Use(middlewares.ContentTypeMiddleware)
+	// JWT decoder middleware
+	//jwtDecoder, err := middlewares.DecodeJWT(jwt.SigningMethodHS256, config.JWTSecret, logger)
+	// if err != nil {
+	// 	logger.Error("invalid JWT", err)
+	// }
+	// Define server options to handle errors and decode JWT
+	options := []gokitHTTP.ServerOption{
+		gokitHTTP.ServerErrorEncoder(codec.HTTPErrorEncoder(logger)),
+		gokitHTTP.ServerBefore(gokitJWT.HTTPToContext()),
+		//gokitHTTP.ServerBefore(jwtDecoder),
+	}
+	// Initialize request validator
+	// entities.InitValidator()
+
+	r.Methods(http.MethodPost).Path(getInitPath("initDB")).Handler(gokitHTTP.NewServer(
+		e.ForceReset,
+		codec.DecodeEmptyRequest,
+		codec.JSONEncoder(logger),
+		options...,
+	))
 }

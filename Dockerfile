@@ -1,4 +1,4 @@
-FROM golang:alpine AS goaccess
+FROM golang:alpine AS goaccess-api
 
 # Working directory for build
 WORKDIR /build
@@ -10,16 +10,16 @@ RUN go mod download
 
 # Build the code to get the binary (goaccess)
 COPY . .
-WORKDIR /build/cmd/goaccess/
+WORKDIR /build/cmd/goaccess-api/
 RUN go get
-RUN go build -o goaccess
+RUN go build -o goaccessapi
 
 # # Working directory for place the binary
 WORKDIR /bin
 RUN mkdir init
 
-RUN cp /build/cmd/goaccess/goaccess .
+RUN cp /build/cmd/goaccess-api/goaccessapi .
 RUN cp -R /build/init/modules/ ./init
 EXPOSE 8077
-ENTRYPOINT ["/bin/goaccess"]
+ENTRYPOINT ["/bin/goaccessapi"]
 # RUN ping google.com

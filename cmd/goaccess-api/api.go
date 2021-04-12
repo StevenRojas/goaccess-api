@@ -26,18 +26,16 @@ func main() {
 	logger.Debug("creating services...")
 	factory := service.NewServiceFactory(ctx, serviceConfig)
 	factory.Setup()
-	authenticationService := factory.CreateAuthenticationService()
+	// authenticationService := factory.CreateAuthenticationService()
 	accessService := factory.CreateAccessService()
 	authorizationService := factory.CreateAuthorizationService()
 	initService := factory.CreateInitializationService()
 	logger.Debug("services ready")
-	fmt.Printf("%T --- %T ---%T ---%T ---\n\n", authenticationService, accessService, authorizationService, initService)
-
-	initService.Init(ctx, false)
 
 	router := mux.NewRouter()
 	transport.MakeHTTPHandlerForAccess(router, accessService, serviceConfig.Security, logger)
 	transport.MakeHTTPHandlerForActions(router, authorizationService, serviceConfig.Security, logger)
+	transport.MakeHTTPHandlerForInit(router, initService, serviceConfig.Security, logger)
 
 	var runGroup group.Group
 	{
