@@ -100,6 +100,20 @@ func MakeHTTPHandlerForAccess(r *mux.Router, svc service.AccessService, config c
 		options...,
 	))
 
+	r.Methods(http.MethodGet).Path(getAccessPath("getAccessStructure")).Handler(gokitHTTP.NewServer(
+		e.GetAccessStructure,
+		codec.DecodeModuleNameRequest,
+		codec.JSONEncoder(logger),
+		options...,
+	))
+
+	r.Methods(http.MethodGet).Path(getAccessPath("getAccessByRole")).Handler(gokitHTTP.NewServer(
+		e.GetAccessByRole,
+		codec.DecodeGetRoleRequest,
+		codec.JSONEncoder(logger),
+		options...,
+	))
+
 	r.Methods(http.MethodGet).Path(getAccessPath("getAssignedModules")).Handler(gokitHTTP.NewServer(
 		e.GetAssignedModules,
 		codec.DecodeGetRoleRequest,

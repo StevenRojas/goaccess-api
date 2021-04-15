@@ -16,3 +16,4 @@
 data/dump.rdb
 init/
 .env
+.vscode/launch.json

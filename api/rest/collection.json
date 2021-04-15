@@ -220,6 +220,70 @@
 							"response": []
 						},
 						{
+							"name": "Get access structure by role",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/modules/:role/access",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"modules",
+										":role",
+										"access"
+									],
+									"variable": [
+										{
+											"key": "role",
+											"value": "r1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get access structure",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/access/modules/:module/structure",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"modules",
+										":module",
+										"structure"
+									],
+									"variable": [
+										{
+											"key": "module",
+											"value": "vehicles"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Assign modules",
 							"request": {
 								"method": "POST",
@@ -868,7 +932,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"actions\": [\n        \"delete:brand:[]:update\",\n        \"delete:brand:[]:remove\"\n    ]\n}",
+									"raw": "{}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -876,32 +940,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/auth/actions/:role/modules/:module/submodules/:submodule",
+									"raw": "{{host}}/init/reset-db",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
-										"auth",
-										"actions",
-										":role",
-										"modules",
-										":module",
-										"submodules",
-										":submodule"
-									],
-									"variable": [
-										{
-											"key": "role",
-											"value": "r2"
-										},
-										{
-											"key": "module",
-											"value": "vehicles"
-										},
-										{
-											"key": "submodule",
-											"value": "reception"
-										}
+										"init",
+										"reset-db"
 									]
 								}
 							},

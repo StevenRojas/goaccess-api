@@ -64,11 +64,11 @@ func HTTPForbidden(err error) HTTPError {
 }
 
 // HTTPNotFound wrapper to 404 error
-func HTTPNotFound(err error) HTTPError {
+func HTTPNotFound(errorMessage string) HTTPError {
 	return HTTPError{
 		Code:    404,
 		Message: errNotFound,
-		Err:     err.Error(),
+		Err:     errorMessage,
 	}
 }
 

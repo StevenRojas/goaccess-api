@@ -222,3 +222,13 @@ func DecodeUnassignSectionsRequest(_ context.Context, r *http.Request) (interfac
 	}
 	return sectionList, nil
 }
+
+// DecodeModuleNameRequest decode request
+func DecodeModuleNameRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	vars := mux.Vars(r)
+	moduleName, ok := vars["module"]
+	if !ok {
+		return "", e.HTTPBadRequestFromString("Module name is missing")
+	}
+	return moduleName, nil
+}

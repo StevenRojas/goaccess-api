@@ -22,6 +22,9 @@ var accessPaths = map[string]string{
 	"editRole":   "/roles/{role_id}", //PUT
 	"deleteRole": "/roles/{role_id}", //DELETE
 
+	"getAccessStructure": "/modules/{module}/structure", //GET
+	"getAccessByRole":    "/modules/{role_id}/access",   //GET
+
 	"getAllModules":      "/modules",                     //GET
 	"getAssignedModules": "/modules/{role_id}",           //GET
 	"assignModules":      "/modules/{role_id}",           //POST

@@ -18,6 +18,8 @@ type AccessEndpoints struct {
 	EditRole              endpoint.Endpoint
 	DeleteRole            endpoint.Endpoint
 	GetAllModules         endpoint.Endpoint
+	GetAccessStructure    endpoint.Endpoint
+	GetAccessByRole       endpoint.Endpoint
 	GetAssignedModules    endpoint.Endpoint
 	AssignModules         endpoint.Endpoint
 	UnassignModules       endpoint.Endpoint
@@ -40,6 +42,8 @@ func MakeAccessEndpoints(
 		DeleteRole:            wrapMiddlewares(makeDeleteRole(s), middlewares),
 		GetAllModules:         wrapMiddlewares(makeGetAllModules(s), middlewares),
 		GetAssignedModules:    wrapMiddlewares(makeGetAssignedModules(s), middlewares),
+		GetAccessStructure:    wrapMiddlewares(makeGetAccessStructure(s), middlewares),
+		GetAccessByRole:       wrapMiddlewares(makeGetAccessByRole(s), middlewares),
 		AssignModules:         wrapMiddlewares(makeAssignModules(s), middlewares),
 		UnassignModules:       wrapMiddlewares(makeUnassignModules(s), middlewares),
 		GetAssignedSubModules: wrapMiddlewares(makeGetAssignedSubModules(s), middlewares),
@@ -103,7 +107,7 @@ func makeEditRole(s service.AccessService) endpoint.Endpoint {
 			return nil, e.HTTPBadRequest(errors.New("unable to cast the request to RoleRequest"))
 		}
 		if ok, _ := s.IsRoleExist(ctx, role.ID); !ok {
-			return nil, e.HTTPNotFound(nil)
+			return nil, e.HTTPNotFound("Role not found")
 		}
 		err := s.EditRole(ctx, role.ID, role.Name)
 		if err != nil {
@@ -120,7 +124,7 @@ func makeDeleteRole(s service.AccessService) endpoint.Endpoint {
 			return nil, e.HTTPBadRequest(errors.New("unable to cast the request to string"))
 		}
 		if ok, _ := s.IsRoleExist(ctx, roleID); !ok {
-			return nil, e.HTTPNotFound(nil)
+			return nil, e.HTTPNotFound("Role not found")
 		}
 		err := s.DeleteRole(ctx, roleID)
 		if err != nil {
@@ -137,6 +141,37 @@ func makeGetAllModules(s service.AccessService) endpoint.Endpoint {
 			return nil, e.HTTPConflict("Unable to get list of modules", err)
 		}
 		return &codec.StringList{List: modules}, nil
+	}
+}
+
+func makeGetAccessStructure(s service.AccessService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		module, ok := request.(string)
+		if !ok {
+			return nil, e.HTTPBadRequest(errors.New("unable to cast the request to string"))
+		}
+		structure, err := s.ModuleStructure(ctx, module)
+		if err != nil {
+			return nil, e.HTTPConflict("Unable to get module structure", err)
+		}
+		if structure == nil {
+			return nil, e.HTTPNotFound("Module not found")
+		}
+		return structure, nil
+	}
+}
+
+func makeGetAccessByRole(s service.AccessService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		roleID, ok := request.(string)
+		if !ok {
+			return nil, e.HTTPBadRequest(errors.New("unable to cast the request to string"))
+		}
+		modules, err := s.GetRoleAccessList(ctx, roleID)
+		if err != nil {
+			return nil, e.HTTPConflict("Unable to get modules by role", err)
+		}
+		return modules, nil
 	}
 }
 
