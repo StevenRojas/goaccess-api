@@ -6,13 +6,46 @@
 	},
 	"item": [
 		{
-			"name": "Access",
+			"name": "access",
 			"item": [
 				{
 					"name": "roles",
 					"item": [
 						{
 							"name": "Add Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Accounting Manager\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access/roles",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Clone Role",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -610,349 +643,349 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "actions",
+			"item": [
+				{
+					"name": "List users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/auth/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"users"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"name": "actions",
-					"item": [
-						{
-							"name": "List users",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "{{host}}/auth/users",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"auth",
-										"users"
-									]
+					"name": "List users by role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/auth/users/role/:role_id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								"role",
+								":role_id"
+							],
+							"variable": [
+								{
+									"key": "role_id",
+									"value": "r1"
 								}
-							},
-							"response": []
-						},
-						{
-							"name": "List users by role",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "{{host}}/auth/users/role/:role_id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										"role",
-										":role_id"
-									],
-									"variable": [
-										{
-											"key": "role_id",
-											"value": "r1"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Access list",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "{{host}}/auth/users/:user_id/access",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										":user_id",
-										"access"
-									],
-									"variable": [
-										{
-											"key": "user_id",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Action list",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "{{host}}/auth/users/:user_id/modules/:module/actions",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										":user_id",
-										"modules",
-										":module",
-										"actions"
-									],
-									"variable": [
-										{
-											"key": "user_id",
-											"value": "1"
-										},
-										{
-											"key": "module",
-											"value": "vehicles"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Assign actions",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"actions\": [\n        \"delete:brand:[]:update\",\n        \"delete:brand:[]:remove\"\n    ]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/auth/actions/:role/modules/:module/submodules/:submodule",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"auth",
-										"actions",
-										":role",
-										"modules",
-										":module",
-										"submodules",
-										":submodule"
-									],
-									"variable": [
-										{
-											"key": "role",
-											"value": "r2"
-										},
-										{
-											"key": "module",
-											"value": "vehicles"
-										},
-										{
-											"key": "submodule",
-											"value": "reception"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Unassign actions",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "{{host}}/auth/actions/:role/modules/:module/submodules/:submodule/:actions",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"auth",
-										"actions",
-										":role",
-										"modules",
-										":module",
-										"submodules",
-										":submodule",
-										":actions"
-									],
-									"variable": [
-										{
-											"key": "role",
-											"value": "r1"
-										},
-										{
-											"key": "module",
-											"value": "vehicles"
-										},
-										{
-											"key": "submodule",
-											"value": "reception"
-										},
-										{
-											"key": "actions",
-											"value": "delete:brand:[]:add"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Assign role to users",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "{{host}}/auth/users/:userId/role/:roleId",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										":userId",
-										"role",
-										":roleId"
-									],
-									"variable": [
-										{
-											"key": "userId",
-											"value": "3"
-										},
-										{
-											"key": "roleId",
-											"value": "r3"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Unassign role from users",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"url": {
-									"raw": "{{host}}/auth/users/:userId/role/:roleId",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"auth",
-										"users",
-										":userId",
-										"role",
-										":roleId"
-									],
-									"variable": [
-										{
-											"key": "userId",
-											"value": "3"
-										},
-										{
-											"key": "roleId",
-											"value": "r3"
-										}
-									]
-								}
-							},
-							"response": []
+							]
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "init",
-					"item": [
-						{
-							"name": "Force reset DB",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{token}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/init/reset-db",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"init",
-										"reset-db"
-									]
+					"name": "Access list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/auth/users/:user_id/access",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								":user_id",
+								"access"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "1"
 								}
-							},
-							"response": []
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "Action list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/auth/users/:user_id/modules/:module/actions",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								":user_id",
+								"modules",
+								":module",
+								"actions"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "1"
+								},
+								{
+									"key": "module",
+									"value": "vehicles"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign actions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"actions\": [\n        \"delete:brand:[]:update\",\n        \"delete:brand:[]:remove\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth/actions/:role/modules/:module/submodules/:submodule",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"actions",
+								":role",
+								"modules",
+								":module",
+								"submodules",
+								":submodule"
+							],
+							"variable": [
+								{
+									"key": "role",
+									"value": "r2"
+								},
+								{
+									"key": "module",
+									"value": "vehicles"
+								},
+								{
+									"key": "submodule",
+									"value": "reception"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unassign actions",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/auth/actions/:role/modules/:module/submodules/:submodule/:actions",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"actions",
+								":role",
+								"modules",
+								":module",
+								"submodules",
+								":submodule",
+								":actions"
+							],
+							"variable": [
+								{
+									"key": "role",
+									"value": "r1"
+								},
+								{
+									"key": "module",
+									"value": "vehicles"
+								},
+								{
+									"key": "submodule",
+									"value": "reception"
+								},
+								{
+									"key": "actions",
+									"value": "delete:brand:[]:add"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign role to users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/auth/users/:userId/role/:roleId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								":userId",
+								"role",
+								":roleId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "3"
+								},
+								{
+									"key": "roleId",
+									"value": "r3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unassign role from users",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/auth/users/:userId/role/:roleId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"users",
+								":userId",
+								"role",
+								":roleId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "3"
+								},
+								{
+									"key": "roleId",
+									"value": "r3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "init",
+			"item": [
+				{
+					"name": "Force reset DB",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/init/reset-db",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"init",
+								"reset-db"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
