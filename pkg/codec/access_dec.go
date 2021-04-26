@@ -67,6 +67,27 @@ func DecodeGetRoleRequest(_ context.Context, r *http.Request) (interface{}, erro
 	return roleID, nil
 }
 
+// DecodeCloneRoleRequest decode request
+func DecodeCloneRoleRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	vars := mux.Vars(r)
+	roleID, ok := vars["role_id"]
+	if !ok {
+		return nil, e.HTTPBadRequestFromString("Role ID is missing")
+	}
+	defer r.Body.Close()
+	roleRequest := entities.Role{}
+
+	errs := entities.InitRoleValidator(r, &roleRequest).ValidateJSON()
+	if len(errs) > 0 {
+		return nil, e.ValidationError{
+			Message: "Validation error while cloning a Role",
+			Fields:  errs,
+		}
+	}
+	roleRequest.ID = roleID
+	return roleRequest, nil
+}
+
 // DecodeGetRolesByUserRequest decode request
 func DecodeGetRolesByUserRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	vars := mux.Vars(r)

@@ -17,6 +17,7 @@ type AccessEndpoints struct {
 	AddRole               endpoint.Endpoint
 	EditRole              endpoint.Endpoint
 	DeleteRole            endpoint.Endpoint
+	CloneRole             endpoint.Endpoint
 	GetAllModules         endpoint.Endpoint
 	GetAccessStructure    endpoint.Endpoint
 	GetAccessByRole       endpoint.Endpoint
@@ -40,6 +41,7 @@ func MakeAccessEndpoints(
 		AddRole:               wrapMiddlewares(makeAddRole(s), middlewares),
 		EditRole:              wrapMiddlewares(makeEditRole(s), middlewares),
 		DeleteRole:            wrapMiddlewares(makeDeleteRole(s), middlewares),
+		CloneRole:             wrapMiddlewares(makeCloneRole(s), middlewares),
 		GetAllModules:         wrapMiddlewares(makeGetAllModules(s), middlewares),
 		GetAssignedModules:    wrapMiddlewares(makeGetAssignedModules(s), middlewares),
 		GetAccessStructure:    wrapMiddlewares(makeGetAccessStructure(s), middlewares),
@@ -131,6 +133,23 @@ func makeDeleteRole(s service.AccessService) endpoint.Endpoint {
 			return nil, e.HTTPConflict("Unable to delete the role", err)
 		}
 		return &codec.NoContentResponse{}, nil
+	}
+}
+
+func makeCloneRole(s service.AccessService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		role, ok := request.(entities.Role)
+		if !ok {
+			return nil, e.HTTPBadRequest(errors.New("unable to cast the request to RoleRequest"))
+		}
+		if ok, _ := s.IsRoleExist(ctx, role.ID); !ok {
+			return nil, e.HTTPNotFound("Role not found")
+		}
+		ID, err := s.CloneRole(ctx, role.ID, role.Name)
+		if err != nil {
+			return nil, e.HTTPConflict("Unable to clone role", err)
+		}
+		return &codec.IDResponse{ID: ID}, nil
 	}
 }
 

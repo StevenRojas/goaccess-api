@@ -93,6 +93,13 @@ func MakeHTTPHandlerForAccess(r *mux.Router, svc service.AccessService, config c
 		options...,
 	))
 
+	r.Methods(http.MethodPost).Path(getAccessPath("cloneRole")).Handler(gokitHTTP.NewServer(
+		e.CloneRole,
+		codec.DecodeCloneRoleRequest,
+		codec.JSONEncoder(logger),
+		options...,
+	))
+
 	r.Methods(http.MethodGet).Path(getAccessPath("getAllModules")).Handler(gokitHTTP.NewServer(
 		e.GetAllModules,
 		codec.DecodeEmptyRequest,

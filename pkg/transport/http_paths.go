@@ -18,9 +18,10 @@ var accessPaths = map[string]string{
 	"listRoles":   "/roles",                //GET
 	"rolesByUser": "/roles/user/{user_id}", //GET
 
-	"addRole":    "/roles",           //POST
-	"editRole":   "/roles/{role_id}", //PUT
-	"deleteRole": "/roles/{role_id}", //DELETE
+	"addRole":    "/roles",                 //POST
+	"editRole":   "/roles/{role_id}",       //PUT
+	"deleteRole": "/roles/{role_id}",       //DELETE
+	"cloneRole":  "/roles/{role_id}/clone", //POST
 
 	"getAccessStructure": "/modules/{module}/structure", //GET
 	"getAccessByRole":    "/modules/{role_id}/access",   //GET
