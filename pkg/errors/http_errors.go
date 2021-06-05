@@ -58,7 +58,7 @@ func HTTPUnauthorized(err error) HTTPError {
 func HTTPForbidden(err error) HTTPError {
 	return HTTPError{
 		Code:    403,
-		Message: errBadRequest,
+		Message: errForbiddenOperation,
 		Err:     err.Error(),
 	}
 }

@@ -3,15 +3,18 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/StevenRojas/goaccess-api/pkg/pb"
-	"github.com/StevenRojas/goaccess-api/pkg/server"
-	"google.golang.org/grpc"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/StevenRojas/goaccess-api/pkg/pb"
+	"github.com/StevenRojas/goaccess-api/pkg/server"
+	"github.com/StevenRojas/goaccess-api/pkg/utils"
+	"google.golang.org/grpc"
+
+	appServ "github.com/StevenRojas/goaccess-api/pkg/service"
 	"github.com/StevenRojas/goaccess-api/pkg/transport"
 	"github.com/StevenRojas/goaccess/pkg/configuration"
 	"github.com/StevenRojas/goaccess/pkg/service"
@@ -24,10 +27,11 @@ var (
 	accessService         service.AccessService
 	authorizationService  service.AuthorizationService
 	initService           service.InitializationService
+	appService            appServ.AppService
 )
 
 func main() {
-	ctx := context.Background()
+	// ctx := context.Background()
 	serviceConfig, err := configuration.Read()
 	if err != nil {
 		panic(err)
@@ -35,18 +39,21 @@ func main() {
 
 	logger := configuration.NewLogger(serviceConfig.Server)
 	logger.Debug("creating services...")
-	factory := service.NewServiceFactory(ctx, serviceConfig)
+	factory := service.NewServiceFactory(context.TODO(), serviceConfig)
 	factory.Setup()
 	authenticationService = factory.CreateAuthenticationService()
 	accessService = factory.CreateAccessService()
 	authorizationService = factory.CreateAuthorizationService()
 	initService = factory.CreateInitializationService()
+	jwtHander := utils.NewJwtHandler(serviceConfig.Security)
+	appService := appServ.NewAppService(authenticationService, jwtHander)
 	logger.Debug("services ready")
 
 	router := mux.NewRouter()
 	transport.MakeHTTPHandlerForAccess(router, accessService, serviceConfig.Security, logger)
 	transport.MakeHTTPHandlerForActions(router, authorizationService, serviceConfig.Security, logger)
 	transport.MakeHTTPHandlerForInit(router, initService, serviceConfig.Security, logger)
+	transport.MakeHTTPHandlerForApp(router, appService, serviceConfig.Security, logger)
 
 	go setGRPC(serviceConfig.Server.GRPC)
 	logger.Info("GRPC server listen at " + serviceConfig.Server.GRPC)
