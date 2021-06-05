@@ -3,15 +3,11 @@ package transport
 const accessPrefix = "/api/access"
 const authorizationPrefix = "/api/auth"
 const initializationPrefix = "/api/init"
+const appPrefix = "/api/app"
 
-var userPaths = map[string]string{
-	"registerUser":   "/users",                           // gRPC
-	"unregisterUser": "/users",                           // gRPC
-	"login":          "/users/login",                     // gRPC
-	"logout":         "/users/logout",                    // gRPC
-	"verify":         "users/token/verify",               // gRPC
-	"refresh":        "users/token/refresh",              // gRPC
-	"hasAccess":      "/users/{user_id}/action/{action}", // gRPC
+var appPaths = map[string]string{
+	"login":  "/login",  // POST
+	"logout": "/logout", // POST
 }
 
 var accessPaths = map[string]string{
@@ -74,6 +70,13 @@ func getActionsPath(path string) string {
 func getInitPath(path string) string {
 	if p, ok := initializationPaths[path]; ok {
 		return initializationPrefix + p
+	}
+	panic("Undefined path")
+}
+
+func getAppPaths(path string) string {
+	if p, ok := appPaths[path]; ok {
+		return appPrefix + p
 	}
 	panic("Undefined path")
 }
