@@ -24,6 +24,11 @@ type IDResponse struct {
 	ID string `json:"id,omitempty"`
 }
 
+// TokenResponse token response
+type TokenResponse struct {
+	Token string `json:"token"`
+}
+
 // StringList list of string
 type StringList struct {
 	List []string `json:"list"`

@@ -4,12 +4,14 @@ import (
 	"net/http"
 
 	"github.com/StevenRojas/goaccess/pkg/entities"
+	"github.com/dgrijalva/jwt-go"
 
 	"github.com/StevenRojas/goaccess-api/pkg/codec"
 	"github.com/StevenRojas/goaccess-api/pkg/middlewares"
 	conf "github.com/StevenRojas/goaccess/pkg/configuration"
 
 	"github.com/StevenRojas/goaccess-api/pkg/endpoints"
+	appServ "github.com/StevenRojas/goaccess-api/pkg/service"
 	"github.com/StevenRojas/goaccess/pkg/service"
 	gokitJWT "github.com/go-kit/kit/auth/jwt"
 	"github.com/go-kit/kit/endpoint"
@@ -45,15 +47,15 @@ func MakeHTTPHandlerForAccess(r *mux.Router, svc service.AccessService, config c
 	r.Use(middlewares.CORSPolicies(corsMethods))
 	r.Use(middlewares.ContentTypeMiddleware)
 	// JWT decoder middleware
-	//jwtDecoder, err := middlewares.DecodeJWT(jwt.SigningMethodHS256, config.JWTSecret, logger)
-	// if err != nil {
-	// 	logger.Error("invalid JWT", err)
-	// }
+	jwtDecoder, err := middlewares.DecodeJWT(jwt.SigningMethodHS256, config.JWTInternalSecret, logger)
+	if err != nil {
+		logger.Error("invalid JWT", err)
+	}
 	// Define server options to handle errors and decode JWT
 	options := []gokitHTTP.ServerOption{
 		gokitHTTP.ServerErrorEncoder(codec.HTTPErrorEncoder(logger)),
 		gokitHTTP.ServerBefore(gokitJWT.HTTPToContext()),
-		//gokitHTTP.ServerBefore(jwtDecoder),
+		gokitHTTP.ServerBefore(jwtDecoder),
 	}
 	// Initialize request validator
 	entities.InitValidator()
@@ -295,6 +297,29 @@ func MakeHTTPHandlerForInit(r *mux.Router, svc service.InitializationService, co
 	r.Methods(http.MethodPost).Path(getInitPath("initDB")).Handler(gokitHTTP.NewServer(
 		e.ForceReset,
 		codec.DecodeEmptyRequest,
+		codec.JSONEncoder(logger),
+		options...,
+	))
+}
+
+func MakeHTTPHandlerForApp(r *mux.Router, svc appServ.AppService, config conf.SecurityConfig, logger conf.LoggerWrapper) {
+	// create endpoints
+	e := endpoints.MakeAppEndpoints(
+		svc,
+		[]endpoint.Middleware{},
+	)
+	// Apply CORS policy middleware
+	r.Use(middlewares.CORSPolicies(corsMethods))
+	r.Use(middlewares.ContentTypeMiddleware)
+	// Define server options to handle errors and decode JWT
+	options := []gokitHTTP.ServerOption{
+		gokitHTTP.ServerErrorEncoder(codec.HTTPErrorEncoder(logger)),
+		gokitHTTP.ServerBefore(gokitJWT.HTTPToContext()),
+	}
+
+	r.Methods(http.MethodPost).Path(getAppPaths("login")).Handler(gokitHTTP.NewServer(
+		e.Login,
+		codec.DecodeLoginRequest,
 		codec.JSONEncoder(logger),
 		options...,
 	))

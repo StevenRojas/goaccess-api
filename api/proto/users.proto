@@ -1,0 +1,61 @@
+syntax = "proto3";
+package goaccess.users.v1;
+option go_package = "/pb";
+
+service Users {
+  rpc RegisterUser(UserRequest) returns (EmptyResponse) {}
+  rpc UnregisterUser(UserRequest) returns (EmptyResponse) {}
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Logout(LogoutRequest) returns (EmptyResponse) {}
+  rpc VerifyToken(VerifyRequest) returns (VerifyResponse) {}
+  rpc RefreshToken(RefreshRequest) returns (TokenResponse) {}
+}
+
+message EmptyResponse {}
+
+message TokenResponse {
+  string access = 1;
+  string refresh = 2;
+}
+
+message UserRequest {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  bool is_admin = 4;
+  repeated string roles = 5;
+}
+
+message UserResponse {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  bool is_admin = 4;
+  repeated string roles = 5;
+}
+
+message LoginRequest {
+  string email = 1;
+}
+
+message LoginResponse {
+  UserResponse user = 1;
+  TokenResponse token = 2;
+}
+
+message LogoutRequest {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message VerifyRequest {
+  string access_token = 1;
+}
+
+message VerifyResponse {
+  string id = 1;
+}
+
+message RefreshRequest {
+  string refresh_token = 1;
+}
